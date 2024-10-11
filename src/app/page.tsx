@@ -1,101 +1,116 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import React, { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default function HeatShrinkCalculator() {
+  const [width, setWidth] = useState<number>(10);
+  const [radius, setRadius] = useState<number>(0);
+  const [diameter, setDiameter] = useState<number>(0);
+
+  useEffect(() => {
+    const calculateDimensions = () => {
+      const r = width / Math.PI;
+      const d = (2 * width) / Math.PI;
+      setRadius(Number(r.toFixed(2)));
+      setDiameter(Number(d.toFixed(2)));
+    };
+
+    calculateDimensions();
+  }, [width]);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+    <div className="container mx-auto p-4">
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>Heat Shrink Tube Calculator</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-4">
+            <Label htmlFor="width">Flat Width (mm)</Label>
+            <Input
+              id="width"
+              type="number"
+              value={width}
+              onChange={(e) => setWidth(Number(e.target.value))}
+              className="mt-1"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          </div>
+          <div className="mb-4">
+            <p>
+              <strong>Radius:</strong> {radius} mm
+            </p>
+            <p>
+              <strong>Diameter:</strong> {diameter} mm
+            </p>
+          </div>
+          <div className="relative aspect-square w-full max-w-[300px] mx-auto">
+            <svg viewBox="0 0 200 200" className="w-full h-full">
+              {/* Circle */}
+              <circle
+                cx="100"
+                cy="100"
+                r={50}
+                fill="none"
+                stroke="black"
+                strokeWidth="2"
+              />
+
+              {/* Diameter line */}
+              <line
+                x1="50"
+                y1="100"
+                x2="150"
+                y2="100"
+                stroke="blue"
+                strokeWidth="2"
+              />
+              <text x="95" y="95" fontSize="10" fill="blue">
+                D
+              </text>
+
+              {/* Radius line */}
+              <line
+                x1="100"
+                y1="100"
+                x2="150"
+                y2="100"
+                stroke="red"
+                strokeWidth="2"
+              />
+              <text x="120" y="95" fontSize="10" fill="red">
+                R
+              </text>
+
+              {/* Flat width */}
+              <line
+                x1="50"
+                y1="170"
+                x2="150"
+                y2="170"
+                stroke="green"
+                strokeWidth="2"
+              />
+              <text x="95" y="165" fontSize="10" fill="green">
+                W
+              </text>
+
+              {/* Labels */}
+              <text x="10" y="105" fontSize="12">
+                Diameter: {diameter} mm
+              </text>
+              <text x="10" y="120" fontSize="12">
+                Radius: {radius} mm
+              </text>
+              <text x="10" y="175" fontSize="12">
+                Width: {width} mm
+              </text>
+            </svg>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
